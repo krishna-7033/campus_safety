@@ -4,57 +4,33 @@ import {
   Map,
   AlertTriangle,
   BarChart3,
-  ShieldCheck,
+  Settings,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const navigation = [
-  {
-    name: "Dashboard",
-    path: "/",
-    icon: LayoutDashboard,
-  },
-  {
-    name: "Live Monitoring",
-    path: "/monitoring",
-    icon: Camera,
-  },
-  {
-    name: "Campus Map",
-    path: "/map",
-    icon: Map,
-  },
-  {
-    name: "Incidents",
-    path: "/incidents",
-    icon: AlertTriangle,
-  },
-  {
-    name: "Analytics",
-    path: "/analytics",
-    icon: BarChart3,
-  },
-  {
-    name: "Admin",
-    path: "/admin",
-    icon: ShieldCheck,
-  },
+  { name: "Command Centre", path: "/", icon: LayoutDashboard },
+  { name: "Live Monitoring", path: "/monitoring", icon: Camera },
+  { name: "Sector Map", path: "/map", icon: Map },
+  { name: "Incidents", path: "/incidents", icon: AlertTriangle },
+  { name: "Analytics", path: "/analytics", icon: BarChart3 },
+  { name: "Administration", path: "/admin", icon: Settings },
 ];
 
 function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <div className="brand-icon">🐒</div>
+        <div className="brand-icon">🛡️</div>
 
         <div>
-          <h1>Smart Campus</h1>
-          <p>Safety System</p>
+          <h1>IBVAP</h1>
+          <p>Border Video Analytics</p>
         </div>
       </div>
 
       <nav className="sidebar-nav">
-        <p className="nav-title">MONITORING</p>
+        <p className="nav-title">SURVEILLANCE</p>
 
         {navigation.map((item) => {
           const Icon = item.icon;
@@ -79,7 +55,7 @@ function Sidebar() {
 
         <div>
           <strong>System Online</strong>
-          <p>Monitoring active</p>
+          <p>SSB · BOP Sector</p>
         </div>
       </div>
     </aside>

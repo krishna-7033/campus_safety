@@ -3,7 +3,10 @@ function AnalyticsPage() {
     <div className="page-container">
       <p className="eyebrow">DATA & INSIGHTS</p>
       <h2>Analytics</h2>
-      <p>Wildlife activity statistics will appear here.</p>
+      <p>
+        Detection trends, breach frequency by sector, and day versus night
+        activity will appear here.
+      </p>
     </div>
   );
 }
