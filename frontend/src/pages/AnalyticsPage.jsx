@@ -1,3 +1,4 @@
+// src/pages/AnalyticsPage.jsx
 import {
   LineChart,
   Line,
@@ -16,17 +17,24 @@ import {
 import { TrendingUp, AlertTriangle, Target, MapPin } from "lucide-react";
 import {
   getDailyDetections,
-  getZoneBreakdown,
-  getSeverityBreakdown,
+  getSectorBreakdown,
+  getThreatLevelBreakdown,
+  getTypeBreakdown,
   getHourlyPattern,
   getCameraStats,
   getSummaryStats,
-} from "../data/monkeyDetectionData";
+} from "../data/surveillanceDetectionData";
 
-const SEVERITY_COLORS = {
+const THREAT_COLORS = {
   Low: "#4ade80",
   Medium: "#facc15",
   High: "#f87171",
+};
+
+const TYPE_COLORS = {
+  Human: "#f87171",
+  Vehicle: "#60a5fa",
+  Animal: "#4ade80",
 };
 
 function StatCard({ icon: Icon, label, value, subtext }) {
@@ -50,8 +58,9 @@ function AnalyticsPage() {
   // react-query hook. The shape returned by each function should stay
   // the same so the charts below don't need to change.
   const dailyData = getDailyDetections();
-  const zoneData = getZoneBreakdown();
-  const severityData = getSeverityBreakdown();
+  const sectorData = getSectorBreakdown();
+  const threatData = getThreatLevelBreakdown();
+  const typeData = getTypeBreakdown();
   const hourlyData = getHourlyPattern();
   const cameraStats = getCameraStats();
   const summary = getSummaryStats();
@@ -60,15 +69,15 @@ function AnalyticsPage() {
     <div className="analytics-page">
       <div className="page-header">
         <h1>Analytics</h1>
-        <p>Monkey detection trends and patterns across campus</p>
+        <p>Detection trends and patterns across monitored border sectors</p>
       </div>
 
       {/* Summary stat cards */}
       <div className="stats-grid">
         <StatCard
           icon={Target}
-          label="Total Sightings"
-          value={summary.totalSightings}
+          label="Total Detections"
+          value={summary.totalDetections}
           subtext="Last 7 days"
         />
         <StatCard
@@ -79,15 +88,15 @@ function AnalyticsPage() {
         />
         <StatCard
           icon={AlertTriangle}
-          label="High Severity"
-          value={summary.highSeverityEvents}
+          label="High Threat"
+          value={summary.highThreatEvents}
           subtext="Events flagged high"
         />
         <StatCard
           icon={MapPin}
-          label="Busiest Zone"
-          value={summary.busiestZone}
-          subtext="Most sightings"
+          label="Most Active Sector"
+          value={summary.mostActiveSector}
+          subtext="Highest detection count"
         />
       </div>
 
@@ -109,19 +118,19 @@ function AnalyticsPage() {
                 stroke="#60a5fa"
                 strokeWidth={2}
                 dot={{ r: 4 }}
-                name="Sightings"
+                name="Detections"
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Severity breakdown */}
+        {/* Threat level breakdown */}
         <div className="chart-card">
-          <h3>Severity Breakdown</h3>
+          <h3>Threat Level Breakdown</h3>
           <ResponsiveContainer width="100%" height={260}>
             <PieChart>
               <Pie
-                data={severityData}
+                data={threatData}
                 dataKey="value"
                 nameKey="name"
                 cx="50%"
@@ -129,10 +138,10 @@ function AnalyticsPage() {
                 outerRadius={80}
                 label
               >
-                {severityData.map((entry) => (
+                {threatData.map((entry) => (
                   <Cell
                     key={entry.name}
-                    fill={SEVERITY_COLORS[entry.name] || "#8884d8"}
+                    fill={THREAT_COLORS[entry.name] || "#8884d8"}
                   />
                 ))}
               </Pie>
@@ -142,24 +151,51 @@ function AnalyticsPage() {
           </ResponsiveContainer>
         </div>
 
-        {/* Zone breakdown */}
+        {/* Detection type breakdown */}
         <div className="chart-card">
-          <h3>Sightings by Zone</h3>
+          <h3>Detections by Type</h3>
           <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={zoneData} layout="vertical" margin={{ left: 24 }}>
+            <PieChart>
+              <Pie
+                data={typeData}
+                dataKey="count"
+                nameKey="type"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                label
+              >
+                {typeData.map((entry) => (
+                  <Cell
+                    key={entry.type}
+                    fill={TYPE_COLORS[entry.type] || "#8884d8"}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Sector breakdown */}
+        <div className="chart-card">
+          <h3>Detections by Sector</h3>
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart data={sectorData} layout="vertical" margin={{ left: 24 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#2a2a3d" />
               <XAxis type="number" stroke="#888" fontSize={12} allowDecimals={false} />
               <YAxis
                 type="category"
-                dataKey="zone"
+                dataKey="sector"
                 stroke="#888"
-                fontSize={12}
-                width={110}
+                fontSize={11}
+                width={150}
               />
               <Tooltip
                 contentStyle={{ background: "#1a1a2e", border: "1px solid #333" }}
               />
-              <Bar dataKey="count" fill="#f472b6" radius={[0, 4, 4, 0]} name="Sightings" />
+              <Bar dataKey="count" fill="#f472b6" radius={[0, 4, 4, 0]} name="Detections" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -175,20 +211,20 @@ function AnalyticsPage() {
               <Tooltip
                 contentStyle={{ background: "#1a1a2e", border: "1px solid #333" }}
               />
-              <Bar dataKey="count" fill="#34d399" radius={[4, 4, 0, 0]} name="Sightings" />
+              <Bar dataKey="count" fill="#34d399" radius={[4, 4, 0, 0]} name="Detections" />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      {/* Camera reliability table */}
+      {/* Camera activity table */}
       <div className="table-card">
         <h3>Camera Activity</h3>
         <table className="analytics-table">
           <thead>
             <tr>
               <th>Camera</th>
-              <th>Zone</th>
+              <th>Sector</th>
               <th>Detections</th>
               <th>Avg. Confidence</th>
             </tr>
@@ -197,7 +233,7 @@ function AnalyticsPage() {
             {cameraStats.map((c) => (
               <tr key={c.camera}>
                 <td>{c.camera}</td>
-                <td>{c.zone}</td>
+                <td>{c.sector}</td>
                 <td>{c.detections}</td>
                 <td>{c.avgConfidence}%</td>
               </tr>
