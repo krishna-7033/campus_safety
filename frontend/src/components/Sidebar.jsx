@@ -4,6 +4,7 @@ import {
   Map,
   AlertTriangle,
   BarChart3,
+  ShieldCheck,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -32,6 +33,11 @@ const navigation = [
     name: "Analytics",
     path: "/analytics",
     icon: BarChart3,
+  },
+  {
+    name: "Admin",
+    path: "/admin",
+    icon: ShieldCheck,
   },
 ];
 
