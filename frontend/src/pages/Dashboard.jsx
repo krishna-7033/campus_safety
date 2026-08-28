@@ -12,7 +12,7 @@ import {
   Users,
 } from "lucide-react";
 
-const API = "http://localhost:5000";
+const API = "http://localhost:5001";
 
 function Dashboard() {
   const [status, setStatus] = useState(null);

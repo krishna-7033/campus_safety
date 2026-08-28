@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Users,
@@ -11,8 +11,6 @@ import {
   ArrowUpRight,
   LogOut,
 } from "lucide-react";
-
-import { useUser, useClerk } from "@clerk/react";
 
 const adminStats = [
   {
@@ -72,45 +70,37 @@ const managementCards = [
 ];
 
 function AdminPage() {
-  const { user, isLoaded } = useUser();
-  const { openSignIn, openSignUp, signOut } = useClerk();
+  const [user, setUser] = useState(null);
+  const [mongoStatus, setMongoStatus] = useState("Checking...");
 
   useEffect(() => {
-    if (!isLoaded || !user) return;
+    const storedUser = localStorage.getItem("user");
 
-    const saveUserToMongoDB = async () => {
+    if (storedUser) {
       try {
-        const response = await fetch("http://localhost:5000/api/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            clerkId: user.id,
-            name: user.fullName || user.firstName || "User",
-            email: user.emailAddresses?.[0]?.emailAddress || "",
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Server returned ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        console.log("User saved to MongoDB:", data);
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setMongoStatus("Connected");
       } catch (error) {
-        console.error("MongoDB user save error:", error);
+        console.error("Invalid stored user:", error);
+        localStorage.removeItem("user");
       }
-    };
+    } else {
+      setMongoStatus("Not logged in");
+    }
+  }, []);
 
-    saveUserToMongoDB();
-  }, [isLoaded, user]);
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    window.location.href = "/";
+  };
 
   return (
     <div className="admin-page">
       <div className="admin-topbar">
-        <div>
+        <div className="admin-heading">
           <div className="admin-label">
             <ShieldCheck size={15} />
             ADMINISTRATION
@@ -126,19 +116,18 @@ function AdminPage() {
         {user ? (
           <div className="admin-user">
             <div className="admin-avatar">
-              {user.firstName?.charAt(0) ||
-                user.emailAddresses?.[0]?.emailAddress?.charAt(0) ||
-                "A"}
+              {user.name?.charAt(0)?.toUpperCase() || "A"}
             </div>
 
             <div className="admin-user-info">
-              <strong>{user.fullName || "Administrator"}</strong>
-              <span>System Administrator</span>
+              <strong>{user.name || "Administrator"}</strong>
+              <span>{user.email || "Administrator"}</span>
             </div>
 
             <button
               className="logout-button"
-              onClick={() => signOut({ redirectUrl: "/" })}
+              onClick={handleLogout}
+              title="Logout"
             >
               <LogOut size={16} />
             </button>
@@ -147,14 +136,14 @@ function AdminPage() {
           <div className="admin-auth-actions">
             <button
               className="admin-create-button"
-              onClick={() => openSignUp({})}
+              onClick={() => (window.location.href = "/register")}
             >
               Create Account
             </button>
 
             <button
               className="admin-login-button"
-              onClick={() => openSignIn({})}
+              onClick={() => (window.location.href = "/login")}
             >
               Login
               <ArrowUpRight size={16} />
@@ -162,6 +151,33 @@ function AdminPage() {
           </div>
         )}
       </div>
+
+      {user && (
+        <div className="admin-connection-bar">
+          <div>
+            <span className="connection-dot connected"></span>
+            <strong>Authentication:</strong>
+            <span>Manual Authentication</span>
+          </div>
+
+          <div>
+            <span
+              className={`connection-dot ${
+                mongoStatus === "Connected" ? "connected" : "error"
+              }`}
+            ></span>
+
+            <strong>Database:</strong>
+
+            <span>MongoDB: {mongoStatus}</span>
+          </div>
+
+          <div>
+            <strong>User ID:</strong>
+            <span>{user.id || "N/A"}</span>
+          </div>
+        </div>
+      )}
 
       <div className="admin-stats">
         {adminStats.map((stat) => {
@@ -179,9 +195,7 @@ function AdminPage() {
 
               <div className="admin-stat-content">
                 <span>{stat.title}</span>
-
                 <h2>{stat.value}</h2>
-
                 <small>{stat.change}</small>
               </div>
             </div>
@@ -192,7 +206,6 @@ function AdminPage() {
       <div className="admin-section-heading">
         <div>
           <span>MANAGEMENT</span>
-
           <h2>System Controls</h2>
         </div>
 
@@ -220,7 +233,9 @@ function AdminPage() {
 
               <p>{card.description}</p>
 
-              <button>{card.action}</button>
+              <button onClick={() => console.log(`${card.title} selected`)}>
+                {card.action}
+              </button>
             </div>
           );
         })}
@@ -231,7 +246,6 @@ function AdminPage() {
           <div className="panel-heading">
             <div>
               <span>RECENT ACTIVITY</span>
-
               <h2>System Activity</h2>
             </div>
 
@@ -282,7 +296,6 @@ function AdminPage() {
           <div className="panel-heading">
             <div>
               <span>SYSTEM HEALTH</span>
-
               <h2>Infrastructure</h2>
             </div>
 

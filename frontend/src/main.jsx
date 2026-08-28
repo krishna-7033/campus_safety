@@ -1,13 +1,13 @@
-import { ClerkProvider } from "@clerk/react";
-import { StrictMode } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.jsx";
+import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <ClerkProvider>
+  <React.StrictMode>
+    <BrowserRouter>
       <App />
-    </ClerkProvider>
-  </StrictMode>,
+    </BrowserRouter>
+  </React.StrictMode>,
 );

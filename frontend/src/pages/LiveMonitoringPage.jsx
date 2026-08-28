@@ -16,7 +16,7 @@ import {
 
 import "./LiveMonitoringPage.css";
 
-const API = "http://localhost:5000";
+const API = "http://localhost:5001";
 const POLL_MS = 400;
 
 const SOURCE_PRESETS = [

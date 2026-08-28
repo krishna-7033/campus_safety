@@ -278,4 +278,4 @@ if __name__ == "__main__":
     print("\n  Surveillance server on http://localhost:5000")
     print("  Stream:  http://localhost:5000/video_feed")
     print("  Status:  http://localhost:5000/status\n")
-    app.run(host="0.0.0.0", port=5000, threaded=True, debug=False)
+    app.run(host="0.0.0.0", port=5001, threaded=True, debug=False)

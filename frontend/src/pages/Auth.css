@@ -1,0 +1,335 @@
+/* =========================================================
+   AUTH PAGES
+========================================================= */
+
+.auth-page {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(45, 85, 120, 0.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(35, 62, 82, 0.12),
+      transparent 30%
+    ),
+    #080b10;
+}
+
+
+/* =========================================================
+   AUTH CARD
+========================================================= */
+
+.auth-card {
+  width: 100%;
+  max-width: 410px;
+
+  padding: 34px;
+
+  border: 1px solid #1d2530;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 23, 31, 0.98),
+      rgba(11, 16, 22, 0.98)
+    );
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.auth-card h1 {
+  color: #f1f5f8;
+
+  font-size: 26px;
+  font-weight: 700;
+
+  letter-spacing: -0.6px;
+}
+
+.auth-card > p {
+  margin-top: 8px;
+
+  color: #778391;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.auth-card form {
+  margin-top: 28px;
+}
+
+.auth-field {
+  margin-bottom: 18px;
+}
+
+.auth-field label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #9aa6b3;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.auth-field input {
+  width: 100%;
+  height: 43px;
+
+  padding: 0 13px;
+
+  border: 1px solid #202a35;
+  border-radius: 8px;
+
+  outline: none;
+
+  background: #0a0f15;
+
+  color: #dce3ea;
+
+  font-size: 11px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-field input::placeholder {
+  color: #515d6a;
+}
+
+.auth-field input:hover {
+  border-color: #293643;
+}
+
+.auth-field input:focus {
+  border-color: #3b6079;
+
+  background: #0c1218;
+
+  box-shadow:
+    0 0 0 3px rgba(59, 96, 121, 0.1);
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+.auth-card form button {
+  width: 100%;
+  height: 43px;
+
+  margin-top: 5px;
+
+  border: 1px solid #35556d;
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1b2f3e,
+      #162633
+    );
+
+  color: #c1d4e3;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-card form button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #213a4d,
+      #1b2e3d
+    );
+
+  border-color: #4b718d;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.2);
+
+  transform: translateY(-1px);
+}
+
+.auth-card form button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.auth-card form button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.auth-error {
+  margin-top: 18px;
+
+  padding: 10px 12px;
+
+  border: 1px solid #4a252a;
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #28171a,
+      #211114
+    );
+
+  color: #df737b;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   LOGIN / REGISTER SWITCH
+========================================================= */
+
+.auth-switch {
+  margin-top: 22px !important;
+
+  text-align: center;
+
+  color: #626e7c !important;
+
+  font-size: 10px !important;
+}
+
+.auth-switch a {
+  color: #8eafc8;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease;
+}
+
+.auth-switch a:hover {
+  color: #b7d1e4;
+
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   REGISTER PAGE SUPPORT
+========================================================= */
+
+.auth-card .auth-title {
+  color: #f1f5f8;
+
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.auth-card .auth-subtitle {
+  margin-top: 8px;
+
+  color: #778391;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .auth-page {
+    padding: 20px;
+  }
+
+  .auth-card {
+    max-width: 100%;
+
+    padding: 28px 24px;
+
+    border-radius: 14px;
+  }
+
+  .auth-card h1 {
+    font-size: 24px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+  .auth-page {
+    padding: 14px;
+  }
+
+  .auth-card {
+    padding: 25px 20px;
+  }
+
+  .auth-card h1 {
+    font-size: 22px;
+  }
+
+  .auth-field input,
+  .auth-card form button {
+    height: 42px;
+  }
+}
